@@ -1,0 +1,40 @@
+# Gradle
+.gradle/
+build/
+*/build/
+
+# Local configuration
+local.properties
+
+# Android Studio
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+# IntelliJ
+*.iml
+
+# Generated files
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Log files
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Keystore files (never commit these)
+*.jks
+*.keystore
+
+# Firebase / Secrets
+google-services.json
+
+# Environment files
+.env

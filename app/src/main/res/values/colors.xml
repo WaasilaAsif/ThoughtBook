@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    // colors.xml (Direction B — light)
+    <color name="canvas">#FAFAFA</color>
+    <color name="canvas_card">#FFFFFF</color>
+    <color name="ink_primary">#1A1A1A</color>
+    <color name="ink_secondary">#6B6B6B</color>
+    <color name="hairline">#E0E0E0</color>
+    <color name="accent">#5C7AFF</color>
+
+<!--    // values-night/colors.xml (Direction B — dark)-->
+<!--    <color name="canvas">#1A1A1A</color>-->
+<!--    <color name="canvas_card">#242424</color>-->
+<!--    <color name="ink_primary">#F0F0F0</color>-->
+<!--    <color name="ink_secondary">#A0A0A0</color>-->
+<!--    <color name="hairline">#3A3A3A</color>-->
+<!--    <color name="accent">#7B93FF</color>-->
+</resources>
