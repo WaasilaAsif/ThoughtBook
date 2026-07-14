@@ -5,4 +5,6 @@ public class EmotionLabel {
     String name;
     String colorHex;
     boolean isCustom;
+
+
 }

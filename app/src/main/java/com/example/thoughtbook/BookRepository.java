@@ -1,6 +1,8 @@
 package com.example.thoughtbook;
+import retrofit2.Callback;
 
-import com.google.firebase.BuildConfig;
+import  com.example.thoughtbook.BuildConfig;
+//import com.google.firebase.BuildConfig;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
@@ -8,15 +10,16 @@ import com.google.firebase.firestore.Query;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import java.util.List;
+import retrofit2.Callback;
 public class BookRepository {
     private final FirebaseFirestore db;
-    //private final GoogleBooksApiService api;
+    private final GoogleBooksApiService api;
     private final String uid;
 
     public BookRepository(String uid) {
         this.uid = uid;
         this.db = FirebaseFirestore.getInstance();
-       // this.api = RetrofitClient.getGoogleBooksService();
+        this.api = RetrofitClient.getGoogleBooksService();
     }
 
     private CollectionReference booksRef() {
@@ -37,7 +40,7 @@ public class BookRepository {
     }
 
     public void logBook(Book book) {
-        booksRef().document(book.bookId).set(book);
+        booksRef().document(book.getBookId()).set(book);
     }
 
     public void updateStatus(String bookId, ShelfStatus status) {
@@ -91,26 +94,29 @@ public class BookRepository {
     }
 
     // ---------- Explore ----------
-//    public void getSimilarBooks(String genre, String author, Callback<GoogleBooksResponse> cb) {
-//        String query = "subject:" + genre + "+inauthor:" + author;
-//        api.searchVolumes(query, BuildConfig.GOOGLE_BOOKS_API_KEY).enqueue(cb);
-//    }
-//
-//    public void searchBooks(String queryText, Callback<GoogleBooksResponse> cb) {
-//        api.searchVolumes(queryText, BuildConfig.GOOGLE_BOOKS_API_KEY).enqueue(cb);
-//    }
 
+
+// ...
+
+    public void getSimilarBooks(String genre, String author, Callback<GoogleBooksResponse> cb) {
+        String query = "subject:" + genre + "+inauthor:" + author;
+        api.searchVolumes(query, BuildConfig.GOOGLE_BOOKS_API_KEY).enqueue(cb);
+    }
+
+    public void searchBooks(String queryText, Callback<GoogleBooksResponse> cb) {
+        api.searchVolumes(queryText, BuildConfig.GOOGLE_BOOKS_API_KEY).enqueue(cb);
+    }
     // ---------- Pace estimate ----------
     public double estimateMinutesRemaining(Book book, List<ReadingLogEntry> logs) {
         if (logs == null || logs.size() < 2) {
             double defaultPagesPerMin = 0.6;
-            return (book.totalPages - book.currentPage) / defaultPagesPerMin;
+            return (book.getTotalPages() - book.getCurrentPage()) / defaultPagesPerMin;
         }
         ReadingLogEntry last = logs.get(logs.size() - 1);
         ReadingLogEntry prev = logs.get(logs.size() - 2);
         double minutesElapsed = (last.timestamp - prev.timestamp) / 60000.0;
         double pagesPerMin = (last.pageAtLog - prev.pageAtLog) / minutesElapsed;
         if (pagesPerMin <= 0) pagesPerMin = 0.6;
-        return (book.totalPages - book.currentPage) / pagesPerMin;
+        return (book.getTotalPages() - book.getCurrentPage()) / pagesPerMin;
     }
 }

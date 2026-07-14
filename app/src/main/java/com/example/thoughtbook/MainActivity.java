@@ -18,16 +18,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
         AuthManager authManager = new AuthManager();
-
-        authManager.ensureSignedIn(task ->{
-            if(task.isSuccessful()){
-            String uid = authManager.getUid();
-
-            //So basiacaly logcar is a android way of cout
-            Log.d(TAG, "signed in with uid : " + uid);}
-            else{                Log.wtf(TAG, "exception occured "+ task.getException());}
-
+        authManager.ensureSignedIn(uid -> {
+            if (uid != null) {
+                Log.d(TAG, "signed in with uid : " + uid);
+            } else {
+                Log.e(TAG, "sign-in failed, uid is null");
+            }
         });
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
