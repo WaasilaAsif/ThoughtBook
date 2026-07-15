@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/bookshelfFragment">
+
+    <fragment
+        android:id="@+id/addBookFragment"
+        android:name="com.example.thoughtbook.AddBookFragment"
+        android:label="fragment_add_book"
+        tools:layout="@layout/fragment_add_book" />
+    <fragment
+        android:id="@+id/bookshelfFragment"
+        android:name="com.example.thoughtbook.BookshelfFragment"
+        android:label="fragment_bookshelf"
+        tools:layout="@layout/fragment_bookshelf" />
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="com.example.thoughtbook.ExploreFragment"
+        android:label="fragment_explore"
+        tools:layout="@layout/fragment_explore" />
+</navigation>

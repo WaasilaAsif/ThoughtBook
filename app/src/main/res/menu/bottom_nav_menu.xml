@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:id="@+id/bookshelfFragment"
+    android:title="BookShelf"
+    android:icon="@color/white"/>
+    <item
+        android:id="@+id/addBookFragment"
+        android:title="AddBook"
+        android:icon="@color/white"/>
+    <item
+        android:id="@+id/exploreFragment"
+        android:title="Explore"
+        android:icon="@color/white"/>
+
+</menu>

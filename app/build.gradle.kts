@@ -67,5 +67,6 @@ dependencies {
         implementation(libs.converter.gson)
 
         implementation(libs.glide)
-
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
 }
