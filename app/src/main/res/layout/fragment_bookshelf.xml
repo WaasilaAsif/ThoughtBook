@@ -1,20 +1,76 @@
-<FrameLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/canvas">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/bookGrid"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp" />
-
-    <Button
-        android:id="@+id/addShelfButton"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:text="+ Shelf" />
+        android:padding="16dp">
 
-</FrameLayout>
+        <!-- Header -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:id="@+id/appTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ThoughtBook"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="@color/accent" />
+
+            <Button
+                android:id="@+id/themeToggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="🌙" />
+
+            <Button
+                android:id="@+id/addShelfButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/themeToggle"
+                android:text="+ Shelf" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:text="Reading Now"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/ink_primary"
+            android:paddingBottom="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/readingNowList"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:text="Library"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/ink_primary"
+            android:paddingTop="24dp"
+            android:paddingBottom="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/libraryCountsContainer"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</ScrollView>
