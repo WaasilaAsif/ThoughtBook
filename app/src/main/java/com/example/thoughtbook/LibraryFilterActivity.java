@@ -20,11 +20,12 @@ public class LibraryFilterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library_filter);
 
-        String statusName = getIntent().getStringExtra("status"); // e.g. "TO_READ"
-        ShelfStatus filterStatus = ShelfStatus.valueOf(statusName);
+        String statusName = getIntent().getStringExtra("status"); // may be null
+        String shelfId = getIntent().getStringExtra("shelfId");   // may be null
+        String screenTitle = getIntent().getStringExtra("title"); // shelf name, or null for status screens
 
         TextView title = findViewById(R.id.filterTitle);
-        title.setText(niceLabel(filterStatus));
+        title.setText(screenTitle != null ? screenTitle : niceLabel(ShelfStatus.valueOf(statusName)));
 
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
 
@@ -42,7 +43,12 @@ public class LibraryFilterActivity extends AppCompatActivity {
         new BookRepository(uid).getAllBooks().observe(this, books -> {
             List<Book> filtered = new ArrayList<>();
             for (Book b : books) {
-                if (b.getStatus() == filterStatus) filtered.add(b);
+                if (shelfId != null) {
+                    if (b.getShelfIds() != null && b.getShelfIds().contains(shelfId)) filtered.add(b);
+                } else {
+                    ShelfStatus filterStatus = ShelfStatus.valueOf(statusName);
+                    if (b.getStatus() == filterStatus) filtered.add(b);
+                }
             }
             adapter.updateBooks(filtered);
         });

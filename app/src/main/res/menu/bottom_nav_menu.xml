@@ -3,14 +3,14 @@
 <item
     android:id="@+id/bookshelfFragment"
     android:title="BookShelf"
-    android:icon="@color/white"/>
+    android:icon="@drawable/bookshelf"/>
     <item
         android:id="@+id/addBookFragment"
         android:title="AddBook"
-        android:icon="@color/white"/>
+        android:icon="@drawable/add"/>
     <item
         android:id="@+id/exploreFragment"
         android:title="Explore"
-        android:icon="@color/white"/>
+        android:icon="@drawable/outline_category_search_24"/>
 
 </menu>
