@@ -196,7 +196,7 @@ public class BookshelfFragment extends Fragment {
         });
         RecyclerView readingNowList = view.findViewById(R.id.readingNowList);
         readingNowList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        BookCardAdapter readingNowAdapter = new BookCardAdapter(new ArrayList<>(), book -> openDetail(book));
+        BookCardAdapter readingNowAdapter = new BookCardAdapter(new ArrayList<>(), book -> openDetail(book), R.layout.item_book_card);
         readingNowList.setAdapter(readingNowAdapter);
 //
 //        LinearLayout libraryCountsContainer = view.findViewById(R.id.libraryCountsContainer);

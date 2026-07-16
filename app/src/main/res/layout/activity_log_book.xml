@@ -2,7 +2,8 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:orientation="vertical"
@@ -46,19 +47,143 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="16dp" />
-        <RadioGroup
-            android:id="@+id/emotionGroup"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <RadioButton android:id="@+id/emotionJoyful" android:text="Joyful" android:tag="#FFC857" />
-            <RadioButton android:id="@+id/emotionBittersweet" android:text="Bittersweet" android:tag="#8E7DBE" />
-            <RadioButton android:id="@+id/emotionCozy" android:text="Cozy" android:tag="#C97C5D" />
-            <RadioButton android:id="@+id/emotionThrilling" android:text="Thrilling" android:tag="#D64550" />
-            <RadioButton android:id="@+id/emotionMelancholy" android:text="Melancholy" android:tag="#5C7AFF" />
-            <RadioButton android:id="@+id/emotionHopeful" android:text="Hopeful" android:tag="#6FCF97" />
-        </RadioGroup>
+<!--        <RadioGroup-->
+<!--            android:id="@+id/emotionGroup"-->
+<!--            android:orientation="vertical"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp">-->
 
+<!--            <LinearLayout-->
+<!--                android:orientation="horizontal"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
+<!--                <RadioButton android:id="@+id/emotionJoyful" android:text="Joyful" android:tag="#FFC857"-->
+<!--                    android:button="@null" android:background="@drawable/emotion_pill_bg"-->
+<!--                    android:paddingHorizontal="14dp" android:paddingVertical="10dp"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textColor="@color/ink_primary" android:layout_marginEnd="8dp" />-->
+<!--                <RadioButton android:id="@+id/emotionBittersweet" android:text="Bittersweet" android:tag="#8E7DBE"-->
+<!--                    android:button="@null" android:background="@drawable/emotion_pill_bg"-->
+<!--                    android:paddingHorizontal="14dp" android:paddingVertical="10dp"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textColor="@color/ink_primary" android:layout_marginEnd="8dp" />-->
+<!--                <RadioButton android:id="@+id/emotionCozy" android:text="Cozy" android:tag="#C97C5D"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:button="@null" android:background="@drawable/emotion_pill_bg"-->
+<!--                    android:paddingHorizontal="14dp" android:paddingVertical="10dp"-->
+<!--                    android:textColor="@color/ink_primary" />-->
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:orientation="horizontal"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="8dp">-->
+<!--                <RadioButton android:id="@+id/emotionThrilling" android:text="Thrilling" android:tag="#D64550"-->
+<!--                    android:button="@null" android:background="@drawable/emotion_pill_bg"-->
+<!--                    android:paddingHorizontal="14dp"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:paddingVertical="10dp"-->
+<!--                    android:textColor="@color/ink_primary" android:layout_marginEnd="8dp" />-->
+<!--                <RadioButton android:id="@+id/emotionMelancholy" android:text="Melancholy" android:tag="#5C7AFF"-->
+<!--                    android:button="@null"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@drawable/emotion_pill_bg"-->
+<!--                    android:paddingHorizontal="14dp" android:paddingVertical="10dp"-->
+<!--                    android:textColor="@color/ink_primary" android:layout_marginEnd="8dp" />-->
+<!--                <RadioButton android:id="@+id/emotionHopeful" android:text="Hopeful" android:tag="#6FCF97"-->
+<!--                    android:button="@null"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@drawable/emotion_pill_bg"-->
+<!--                    android:paddingHorizontal="14dp" android:paddingVertical="10dp"-->
+<!--                    android:textColor="@color/ink_primary" />-->
+<!--            </LinearLayout>-->
+<!--        </RadioGroup>-->
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/emotionGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:singleSelection="true"
+            app:selectionRequired="false">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/emotionJoyful"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Joyful"
+                android:tag="#FFC857"
+                app:chipIcon="@drawable/circle_dot"
+                app:chipIconTint="#FFC857" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/emotionBittersweet"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bittersweet"
+                android:tag="#8E7DBE"
+                app:chipIcon="@drawable/circle_dot"
+                app:chipIconTint="#8E7DBE" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/emotionCozy"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cozy"
+                android:tag="#C97C5D"
+                app:chipIcon="@drawable/circle_dot"
+                app:chipIconTint="#C97C5D" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/emotionThrilling"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thrilling"
+                android:tag="#D64550"
+                app:chipIcon="@drawable/circle_dot"
+                app:chipIconTint="#D64550" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/emotionMelancholy"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Melancholy"
+                android:tag="#5C7AFF"
+                app:chipIcon="@drawable/circle_dot"
+                app:chipIconTint="#5C7AFF" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/emotionHopeful"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hopeful"
+                android:tag="#6FCF97"
+                app:chipIcon="@drawable/circle_dot"
+                app:chipIconTint="#6FCF97" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/addEmotionChip"
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ Add"
+                android:checkable="false" />
+
+        </com.google.android.material.chip.ChipGroup>
         <TextView
             android:text="Note"
             android:layout_width="wrap_content"

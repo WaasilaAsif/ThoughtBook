@@ -4,14 +4,17 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 public class AddLogEntryActivity extends AppCompatActivity {
-
+    private int currentPageValue = 0;
     private BookRepository repository;
     private String bookId;
     private String existingLogId; // null = create mode, non-null = edit mode
@@ -25,23 +28,43 @@ public class AddLogEntryActivity extends AppCompatActivity {
         repository = new BookRepository(uid);
 
         bookId = getIntent().getStringExtra("bookId");
-        existingLogId = getIntent().getStringExtra("logId"); // will be null if not passed
+        existingLogId = getIntent().getStringExtra("logId"); // null if not passed
 
-        EditText pageInput = findViewById(R.id.pageInput);
-        EditText noteInput = findViewById(R.id.noteInput);
-        RadioGroup emotionGroup = findViewById(R.id.emotionGroup);
+        TextView pageInput = findViewById(R.id.pageInput);
+        TextView pageOfText = findViewById(R.id.pageOfText);
+        int totalPages = getIntent().getIntExtra("totalPages", 0);
+        pageOfText.setText("of " + totalPages + " pages");
 
-        // pre-fill fields if editing an existing entry
         if (existingLogId != null) {
-            pageInput.setText(String.valueOf(getIntent().getIntExtra("pageAtLog", 0)));
+            currentPageValue = getIntent().getIntExtra("pageAtLog", 0);
+        }
+        pageInput.setText(String.valueOf(currentPageValue));
+
+        findViewById(R.id.pageMinusButton).setOnClickListener(v -> {
+            if (currentPageValue > 0) currentPageValue--;
+            pageInput.setText(String.valueOf(currentPageValue));
+        });
+
+        findViewById(R.id.pagePlusButton).setOnClickListener(v -> {
+            if (totalPages == 0 || currentPageValue < totalPages) currentPageValue++;
+            pageInput.setText(String.valueOf(currentPageValue));
+        });
+
+        EditText noteInput = findViewById(R.id.noteInput);
+        ChipGroup emotionGroup = findViewById(R.id.emotionGroup);
+        // pre-fill note + emotion if editing (page is already handled above)
+        if (existingLogId != null) {
             noteInput.setText(getIntent().getStringExtra("noteText"));
             String emotionName = getIntent().getStringExtra("emotionName");
             if (emotionName != null) {
                 for (int i = 0; i < emotionGroup.getChildCount(); i++) {
-                    RadioButton rb = (RadioButton) emotionGroup.getChildAt(i);
-                    if (rb.getText().toString().equals(emotionName)) {
-                        rb.setChecked(true);
-                        break;
+                    android.view.View child = emotionGroup.getChildAt(i);
+                    if (child instanceof Chip) {
+                        Chip chip = (Chip) child;
+                        if (chip.getText().toString().equals(emotionName)) {
+                            chip.setChecked(true);
+                            break;
+                        }
                     }
                 }
             }
@@ -51,21 +74,14 @@ public class AddLogEntryActivity extends AppCompatActivity {
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
 
         findViewById(R.id.saveButton).setOnClickListener(v -> {
-            int page;
-            try {
-                page = Integer.parseInt(pageInput.getText().toString().trim());
-            } catch (NumberFormatException e) {
-                Toast.makeText(this, "Enter a valid page number", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            int page = currentPageValue;
 
-            int selectedId = emotionGroup.getCheckedRadioButtonId();
-            if (selectedId == -1) {
+            int selectedId = emotionGroup.getCheckedChipId();
+            if (selectedId == android.view.View.NO_ID) {
                 Toast.makeText(this, "Pick how it feels", Toast.LENGTH_SHORT).show();
                 return;
             }
-            RadioButton selected = findViewById(selectedId);
-
+            Chip selected = findViewById(selectedId);
             ReadingLogEntry entry = new ReadingLogEntry();
             entry.setLogId(existingLogId != null ? existingLogId : java.util.UUID.randomUUID().toString());
             entry.setPageAtLog(page);

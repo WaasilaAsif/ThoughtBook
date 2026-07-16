@@ -41,7 +41,7 @@ public class LibraryFilterActivity extends AppCompatActivity {
             Intent intent = new Intent(this, BookDetailActivity.class);
             intent.putExtra("bookId", book.getBookId());
             startActivity(intent);
-        });
+        }, R.layout.item_book_card);
         grid.setAdapter(adapter);
 
 //        String uid = FirebaseAuth.getInstance().getUid();

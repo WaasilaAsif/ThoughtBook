@@ -63,6 +63,7 @@ public class BookDetailActivity extends AppCompatActivity {
         findViewById(R.id.addLogButton).setOnClickListener(v -> {
             Intent intent = new Intent(this, AddLogEntryActivity.class);
             intent.putExtra("bookId", bookId);
+            intent.putExtra("totalPages", currentBook.getTotalPages());
             startActivity(intent);
         });
         RecyclerView timelineList = findViewById(R.id.logTimelineList);
@@ -76,6 +77,7 @@ public class BookDetailActivity extends AppCompatActivity {
             intent.putExtra("pageAtLog", entry.getPageAtLog());
             intent.putExtra("noteText", entry.getNoteText());
             intent.putExtra("emotionName", entry.getEmotionName());
+            intent.putExtra("totalPages", currentBook.getTotalPages());
             startActivity(intent);
         });
 

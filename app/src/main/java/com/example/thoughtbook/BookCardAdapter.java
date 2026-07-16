@@ -35,9 +35,12 @@ public class BookCardAdapter extends RecyclerView.Adapter<BookCardAdapter.ViewHo
         }
     }
 
-    public BookCardAdapter(List<Book> books, onBookClickListener listener) {
+    private final int layoutResId;
+
+    public BookCardAdapter(List<Book> books, onBookClickListener listener, int layoutResId) {
         this.books = books;
         this.listener = listener;
+        this.layoutResId = layoutResId;
     }
     public void updateBooks(List<Book> newBooks) {
         this.books = newBooks;
@@ -48,7 +51,7 @@ public class BookCardAdapter extends RecyclerView.Adapter<BookCardAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_book_card, viewGroup, false);
+                .inflate(layoutResId, viewGroup, false);
         return new ViewHolder(view);
     }
 

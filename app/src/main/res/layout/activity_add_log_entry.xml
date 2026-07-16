@@ -1,68 +1,266 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/canvas"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="20dp">
 
-        <Button
-            android:id="@+id/backButton"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Back" />
+            android:gravity="center_vertical">
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@android:drawable/ic_menu_revert"
+                android:background="@drawable/pill_bg"
+                android:padding="8dp"
+                android:contentDescription="Back" />
+            <TextView
+                android:text="Add a log entry"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/ink_primary"
+                android:layout_marginStart="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <TextView
-            android:text="Current page"
+            android:text="CURRENT PAGE"
+            android:textColor="@color/ink_secondary"
+            android:textSize="12sp"
+            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp" />
-        <EditText
-            android:id="@+id/pageInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number" />
+            android:layout_height="wrap_content" />
 
-        <TextView
-            android:text="How does it feel right now?"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp" />
-        <RadioGroup
-            android:id="@+id/emotionGroup"
+        <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <RadioButton android:id="@+id/emotionJoyful" android:text="Joyful" android:tag="#FFC857" />
-            <RadioButton android:id="@+id/emotionBittersweet" android:text="Bittersweet" android:tag="#8E7DBE" />
-            <RadioButton android:id="@+id/emotionCozy" android:text="Cozy" android:tag="#C97C5D" />
-            <RadioButton android:id="@+id/emotionThrilling" android:text="Thrilling" android:tag="#D64550" />
-            <RadioButton android:id="@+id/emotionMelancholy" android:text="Melancholy" android:tag="#5C7AFF" />
-            <RadioButton android:id="@+id/emotionHopeful" android:text="Hopeful" android:tag="#6FCF97" />
-        </RadioGroup>
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="@drawable/pill_bg"
+            android:padding="12dp"
+            android:layout_marginTop="8dp">
+
+            <ImageButton
+                android:id="@+id/pageMinusButton"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/circle_button_bg"
+                android:src="@android:drawable/ic_media_previous"
+                android:contentDescription="Decrease page" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/pageInput"
+                    android:text="0"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/ink_primary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/pageOfText"
+                    android:text="of 0 pages"
+                    android:textSize="12sp"
+                    android:textColor="@color/ink_secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/pagePlusButton"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/circle_button_bg"
+                android:src="@android:drawable/ic_media_next"
+                android:contentDescription="Increase page" />
+        </LinearLayout>
 
         <TextView
-            android:text="Note"
+            android:text="HOW DOES IT FEEL RIGHT NOW?"
+            android:textColor="@color/ink_secondary"
+            android:textSize="12sp"
+            android:layout_marginTop="24dp"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+<!--        <RadioGroup-->
+<!--            android:id="@+id/emotionGroup"-->
+<!--            android:orientation="vertical"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp">-->
+
+<!--            <LinearLayout-->
+<!--                android:orientation="horizontal"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
+<!--                <RadioButton android:id="@+id/emotionJoyful" android:text="Joyful" android:tag="#FFC857"-->
+<!--                    android:button="@null" android:background="@drawable/emotion_pill_bg"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:paddingHorizontal="14dp" android:paddingVertical="10dp"-->
+<!--                    android:textColor="@color/ink_primary" android:layout_marginEnd="8dp" />-->
+<!--                <RadioButton android:id="@+id/emotionBittersweet" android:text="Bittersweet" android:tag="#8E7DBE"-->
+<!--                    android:button="@null" android:background="@drawable/emotion_pill_bg"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:paddingHorizontal="14dp" android:paddingVertical="10dp"-->
+<!--                    android:textColor="@color/ink_primary" android:layout_marginEnd="8dp" />-->
+<!--                <RadioButton android:id="@+id/emotionCozy" android:text="Cozy" android:tag="#C97C5D"-->
+<!--                    android:button="@null" android:background="@drawable/emotion_pill_bg"-->
+<!--                    android:paddingHorizontal="14dp" android:paddingVertical="10dp"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textColor="@color/ink_primary" />-->
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:orientation="horizontal"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="8dp">-->
+<!--                <RadioButton android:id="@+id/emotionThrilling" android:text="Thrilling" android:tag="#D64550"-->
+<!--                    android:button="@null" android:background="@drawable/emotion_pill_bg"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:paddingHorizontal="14dp" android:paddingVertical="10dp"-->
+<!--                    android:textColor="@color/ink_primary" android:layout_marginEnd="8dp" />-->
+<!--                <RadioButton android:id="@+id/emotionMelancholy" android:text="Melancholy" android:tag="#5C7AFF"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:button="@null" android:background="@drawable/emotion_pill_bg"-->
+<!--                    android:paddingHorizontal="14dp" android:paddingVertical="10dp"-->
+<!--                    android:textColor="@color/ink_primary" android:layout_marginEnd="8dp" />-->
+<!--                <RadioButton android:id="@+id/emotionHopeful" android:text="Hopeful" android:tag="#6FCF97"-->
+<!--                    android:button="@null" android:background="@drawable/emotion_pill_bg"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:paddingHorizontal="14dp" android:paddingVertical="10dp"-->
+<!--                    android:textColor="@color/ink_primary" />-->
+<!--            </LinearLayout>-->
+<!--        </RadioGroup>-->
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/emotionGroup"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp" />
+            android:layout_marginTop="8dp"
+            app:singleSelection="true"
+            app:selectionRequired="false">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/emotionJoyful"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Joyful"
+                android:tag="#FFC857"
+                app:chipIcon="@drawable/circle_dot"
+                app:chipIconTint="#FFC857" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/emotionBittersweet"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bittersweet"
+                android:tag="#8E7DBE"
+                app:chipIcon="@drawable/circle_dot"
+                app:chipIconTint="#8E7DBE" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/emotionCozy"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cozy"
+                android:tag="#C97C5D"
+                app:chipIcon="@drawable/circle_dot"
+                app:chipIconTint="#C97C5D" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/emotionThrilling"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thrilling"
+                android:tag="#D64550"
+                app:chipIcon="@drawable/circle_dot"
+                app:chipIconTint="#D64550" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/emotionMelancholy"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Melancholy"
+                android:tag="#5C7AFF"
+                app:chipIcon="@drawable/circle_dot"
+                app:chipIconTint="#5C7AFF" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/emotionHopeful"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hopeful"
+                android:tag="#6FCF97"
+                app:chipIcon="@drawable/circle_dot"
+                app:chipIconTint="#6FCF97" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/addEmotionChip"
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ Add"
+                android:checkable="false" />
+
+        </com.google.android.material.chip.ChipGroup>
+        <TextView
+            android:text="NOTE"
+            android:textColor="@color/ink_secondary"
+            android:textSize="12sp"
+            android:layout_marginTop="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <EditText
             android:id="@+id/noteInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="What's happening in the story right now?"
+            android:background="@drawable/pill_bg"
+            android:padding="14dp"
+            android:textColor="@color/ink_primary"
             android:inputType="textMultiLine"
-            android:minLines="3" />
+            android:minLines="3"
+            android:layout_marginTop="8dp" />
 
         <Button
             android:id="@+id/saveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save"
-            android:layout_marginTop="16dp" />
+            android:text="Save log entry"
+            android:backgroundTint="@color/accent"
+            android:layout_marginTop="20dp" />
 
         <Button
             android:id="@+id/deleteButton"

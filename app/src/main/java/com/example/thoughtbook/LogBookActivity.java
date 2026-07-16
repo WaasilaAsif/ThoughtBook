@@ -15,7 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 public class LogBookActivity extends AppCompatActivity {
 
     private BookRepository repository;
@@ -74,7 +75,7 @@ public class LogBookActivity extends AppCompatActivity {
     private void saveBookAndLog() {
         EditText totalPagesInput = findViewById(R.id.totalPagesInput);
         EditText noteInput = findViewById(R.id.noteInput);
-        RadioGroup emotionGroup = findViewById(R.id.emotionGroup);
+        ChipGroup emotionGroup = findViewById(R.id.emotionGroup);
         //book.setAuthors(java.util.Arrays.asList(bookAuthor.split(", ")));
         int totalPages;
         try {
@@ -84,12 +85,12 @@ public class LogBookActivity extends AppCompatActivity {
             return;
         }
 
-        int selectedEmotionId = emotionGroup.getCheckedRadioButtonId();
-        if (selectedEmotionId == -1) {
+        int selectedEmotionId = emotionGroup.getCheckedChipId();
+        if (selectedEmotionId == android.view.View.NO_ID) {
             Toast.makeText(this, "Pick how it feels", Toast.LENGTH_SHORT).show();
             return;
         }
-        android.widget.RadioButton selectedButton = findViewById(selectedEmotionId);
+        Chip selectedButton = findViewById(selectedEmotionId);
         String emotionName = selectedButton.getText().toString();
         String emotionColorHex = selectedButton.getTag().toString();
 
