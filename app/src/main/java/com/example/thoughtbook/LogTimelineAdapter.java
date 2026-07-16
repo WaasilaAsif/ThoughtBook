@@ -3,6 +3,7 @@ package com.example.thoughtbook;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,10 +30,12 @@ public class LogTimelineAdapter extends RecyclerView.Adapter<LogTimelineAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView meta, note;
+        ImageView dot;
         public ViewHolder(View view) {
             super(view);
             meta = view.findViewById(R.id.logMeta);
             note = view.findViewById(R.id.logNote);
+            dot = view.findViewById(R.id.logDot);
         }
     }
 
@@ -50,6 +53,11 @@ public class LogTimelineAdapter extends RecyclerView.Adapter<LogTimelineAdapter.
         String dateStr = new SimpleDateFormat("MMM d", Locale.getDefault()).format(entry.timestamp);
         holder.meta.setText(entry.emotionName + " · page " + entry.pageAtLog + " · " + dateStr);
         holder.note.setText(entry.noteText);
+
+        if (entry.getEmotionColorHex() != null) {
+            holder.dot.setColorFilter(android.graphics.Color.parseColor(entry.getEmotionColorHex()));
+        }
+
         holder.itemView.setOnClickListener(v -> listener.onLogClick(entry));
     }
 

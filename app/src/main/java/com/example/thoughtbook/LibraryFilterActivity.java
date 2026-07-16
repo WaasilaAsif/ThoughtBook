@@ -25,12 +25,17 @@ public class LibraryFilterActivity extends AppCompatActivity {
         String screenTitle = getIntent().getStringExtra("title"); // shelf name, or null for status screens
 
         TextView title = findViewById(R.id.filterTitle);
-        title.setText(screenTitle != null ? screenTitle : niceLabel(ShelfStatus.valueOf(statusName)));
-
+        if (screenTitle != null) {
+            title.setText(screenTitle);
+        } else if (statusName != null) {
+            title.setText(niceLabel(ShelfStatus.valueOf(statusName)));
+        } else {
+            title.setText("All Books");
+        }
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
 
         RecyclerView grid = findViewById(R.id.filteredGrid);
-        grid.setLayoutManager(new GridLayoutManager(this, 2));
+        grid.setLayoutManager(new GridLayoutManager(this, 3));
 
         BookCardAdapter adapter = new BookCardAdapter(new ArrayList<>(), book -> {
             Intent intent = new Intent(this, BookDetailActivity.class);
@@ -39,15 +44,30 @@ public class LibraryFilterActivity extends AppCompatActivity {
         });
         grid.setAdapter(adapter);
 
+//        String uid = FirebaseAuth.getInstance().getUid();
+//        new BookRepository(uid).getAllBooks().observe(this, books -> {
+//            List<Book> filtered = new ArrayList<>();
+//            for (Book b : books) {
+//                if (shelfId != null) {
+//                    if (b.getShelfIds() != null && b.getShelfIds().contains(shelfId)) filtered.add(b);
+//                } else {
+//                    ShelfStatus filterStatus = ShelfStatus.valueOf(statusName);
+//                    if (b.getStatus() == filterStatus) filtered.add(b);
+//                }
+//            }
+//            adapter.updateBooks(filtered);
+//        });
         String uid = FirebaseAuth.getInstance().getUid();
         new BookRepository(uid).getAllBooks().observe(this, books -> {
             List<Book> filtered = new ArrayList<>();
             for (Book b : books) {
                 if (shelfId != null) {
                     if (b.getShelfIds() != null && b.getShelfIds().contains(shelfId)) filtered.add(b);
-                } else {
+                } else if (statusName != null) {
                     ShelfStatus filterStatus = ShelfStatus.valueOf(statusName);
                     if (b.getStatus() == filterStatus) filtered.add(b);
+                } else {
+                    filtered.add(b); // no filter at all — "View All" case
                 }
             }
             adapter.updateBooks(filtered);

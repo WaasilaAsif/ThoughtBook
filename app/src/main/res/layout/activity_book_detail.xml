@@ -1,52 +1,180 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/canvas">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="20dp">
 
-        <Button
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Back" />
+            android:gravity="center_vertical"
+            android:paddingBottom="8dp">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@android:drawable/ic_menu_revert"
+                android:background="@drawable/pill_bg"
+                android:padding="8dp"
+                android:contentDescription="Back" />
+
+            <TextView
+                android:text="BOOK"
+                android:textStyle="bold"
+                android:textColor="@color/ink_secondary"
+                android:layout_marginStart="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <FrameLayout
+            android:layout_width="220dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp">
+
+            <ImageView
+                android:id="@+id/detailCoverImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:background="@drawable/rounded_card_bg" />
+
+            <TextView
+                android:id="@+id/detailFallbackTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="20dp"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:background="@drawable/rounded_card_bg" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/detailTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/ink_primary"
+            android:layout_marginTop="16dp" />
 
         <TextView
             android:id="@+id/detailAuthor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:textSize="14sp"
-            android:paddingBottom="12dp" />
+            android:textColor="@color/ink_secondary" />
 
-        <TextView
-            android:id="@+id/detailPace"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/pill_bg"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/emotionDot"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/circle_dot"
+                android:layout_marginEnd="6dp" />
+
+            <TextView
+                android:id="@+id/emotionLabel"
+                android:textColor="@color/accent"
+                android:textSize="13sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/starRatingContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:paddingBottom="16dp" />
-        <Button
-            android:id="@+id/addLogButton"
-            android:layout_width="wrap_content"
+            android:background="@color/canvas_card"
+            android:padding="16dp"
+            android:layout_marginTop="20dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="READING PACE"
+                    android:textColor="@color/ink_secondary"
+                    android:textSize="12sp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/pagesProgressText"
+                    android:textColor="@color/ink_primary"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/paceProgressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:max="100" />
+
+            <TextView
+                android:id="@+id/detailPace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/ink_primary"
+                android:textStyle="bold"
+                android:layout_marginTop="6dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="+ Add Log"
-            android:layout_marginBottom="12dp" />
-        <TextView
-            android:text="Log timeline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold" />
+            android:layout_marginTop="20dp">
+            <TextView
+                android:text="Log timeline"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/ink_primary"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/addLogButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ Add log" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/logTimelineList"

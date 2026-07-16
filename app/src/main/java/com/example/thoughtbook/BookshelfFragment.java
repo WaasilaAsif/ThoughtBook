@@ -189,7 +189,11 @@ public class BookshelfFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.addShelfButton).setOnClickListener(v -> showCreateShelfDialog());
         viewModel = new ViewModelProvider(this).get(BookshelfViewModel.class);
-
+        view.findViewById(R.id.viewAllButton).setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), LibraryFilterActivity.class);
+            intent.putExtra("title", "All Books");
+            startActivity(intent);
+        });
         RecyclerView readingNowList = view.findViewById(R.id.readingNowList);
         readingNowList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         BookCardAdapter readingNowAdapter = new BookCardAdapter(new ArrayList<>(), book -> openDetail(book));

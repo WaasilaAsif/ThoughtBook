@@ -135,6 +135,9 @@ public class BookRepository {
             }
         });
     }
+    public void updateRating(String bookId, int rating) {
+        booksRef().document(bookId).update("personalRating", (float) rating);
+    }
     public void searchBooks(String queryText, Callback<GoogleBooksResponse> cb) {
         api.searchVolumes(queryText, BuildConfig.GOOGLE_BOOKS_API_KEY).enqueue(cb);
     }

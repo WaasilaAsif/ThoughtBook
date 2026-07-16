@@ -24,6 +24,12 @@ public class LogBookActivity extends AppCompatActivity {
 
     private String bookTitle, bookAuthor, coverUrl, googleBooksId, bookGenre;
 
+    private String secureUrl(String url) {
+        if (url != null && url.startsWith("http://")) {
+            return url.replace("http://", "https://");
+        }
+        return url;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +108,7 @@ public class LogBookActivity extends AppCompatActivity {
         book.setGoogleBooksId(googleBooksId);
         book.setTitle(bookTitle);
         book.setAuthors(java.util.Arrays.asList(bookAuthor.split(", ")));
-        book.setCoverUrl(coverUrl);
+        book.setCoverUrl(secureUrl(coverUrl));
         book.setStatus(ShelfStatus.READING);
         book.setShelfIds(selectedShelfIds);
         book.setTotalPages(totalPages);
