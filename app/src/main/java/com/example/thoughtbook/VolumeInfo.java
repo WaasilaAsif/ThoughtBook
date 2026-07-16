@@ -7,4 +7,5 @@ public class VolumeInfo {
     List<String> authors;
     List<String> categories;
     ImageLinks imageLinks;
+    int pageCount;
 }
