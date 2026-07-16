@@ -40,4 +40,3 @@
 
 ---
 
-**Last updated:** Day 3 – Book Detail screen in progress.
