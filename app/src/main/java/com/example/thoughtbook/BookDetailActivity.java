@@ -1,5 +1,6 @@
 package com.example.thoughtbook;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -28,10 +29,25 @@ public class BookDetailActivity extends AppCompatActivity {
         repository = new BookRepository(uid);
 
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
-
+        findViewById(R.id.addLogButton).setOnClickListener(v -> {
+            Intent intent = new Intent(this, AddLogEntryActivity.class);
+            intent.putExtra("bookId", bookId);
+            startActivity(intent);
+        });
         RecyclerView timelineList = findViewById(R.id.logTimelineList);
         timelineList.setLayoutManager(new LinearLayoutManager(this));
-        timelineAdapter = new LogTimelineAdapter(new ArrayList<>());
+        //timelineAdapter = new LogTimelineAdapter(new ArrayList<>());
+
+        timelineAdapter = new LogTimelineAdapter(new ArrayList<>(), entry -> {
+            Intent intent = new Intent(this, AddLogEntryActivity.class);
+            intent.putExtra("bookId", bookId);
+            intent.putExtra("logId", entry.getLogId());
+            intent.putExtra("pageAtLog", entry.getPageAtLog());
+            intent.putExtra("noteText", entry.getNoteText());
+            intent.putExtra("emotionName", entry.getEmotionName());
+            startActivity(intent);
+        });
+
         timelineList.setAdapter(timelineAdapter);
 
         TextView titleText = findViewById(R.id.detailTitle);

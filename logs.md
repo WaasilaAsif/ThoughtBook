@@ -28,6 +28,8 @@
 
     * Check that `EmotionLabel`, `ReadingLogEntry`, and `Shelf` have complete getters and setters like `Book`.
 
+* **Image Parsing**
+* The known issues on your backlog file — duplicate search listener, http/https cover URLs, duplicate Firestore listener in pace display — worth a pass if time allows, not blocking
 ---
 
 ## Future Features

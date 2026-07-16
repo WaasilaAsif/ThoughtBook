@@ -105,6 +105,8 @@ public class AddBookFragment extends Fragment {
                 ? String.join(", ", info.authors) : "Unknown author");
         intent.putExtra("coverUrl", info.imageLinks != null ? info.imageLinks.thumbnail : null);
         intent.putExtra("googleBooksId", item.id);
+        intent.putExtra("genre", info.categories != null && !info.categories.isEmpty()
+                ? info.categories.get(0) : null);
         startActivity(intent);
     }
 }

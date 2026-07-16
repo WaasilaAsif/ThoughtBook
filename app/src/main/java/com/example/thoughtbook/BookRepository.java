@@ -1,4 +1,6 @@
 package com.example.thoughtbook;
+import android.util.Log;
+
 import retrofit2.Callback;
 
 import  com.example.thoughtbook.BuildConfig;
@@ -10,6 +12,8 @@ import com.google.firebase.firestore.Query;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import java.util.List;
+import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Callback;
 public class BookRepository {
     private final FirebaseFirestore db;
@@ -59,9 +63,7 @@ public class BookRepository {
     }
 
     public void addLogEntry(String bookId, ReadingLogEntry entry) {
-        CollectionReference logsRef = booksRef().document(bookId).collection("logs");
-        logsRef.add(entry);
-        // keep the book doc's currentPage + emotion in sync for card display
+        booksRef().document(bookId).collection("logs").document(entry.logId).set(entry);
         booksRef().document(bookId).update(
                 "currentPage", entry.pageAtLog,
                 "currentEmotionColorHex", entry.emotionColorHex
@@ -92,9 +94,47 @@ public class BookRepository {
 
     public void getSimilarBooks(String genre, String author, Callback<GoogleBooksResponse> cb) {
         String query = "subject:" + genre + "+inauthor:" + author;
-        api.searchVolumes(query, BuildConfig.GOOGLE_BOOKS_API_KEY).enqueue(cb);
-    }
+        Log.d("ExploreDebug", "First query: " + query);
 
+        api.searchVolumes(query, BuildConfig.GOOGLE_BOOKS_API_KEY).enqueue(new Callback<GoogleBooksResponse>() {
+            @Override
+            public void onResponse(Call<GoogleBooksResponse> call, Response<GoogleBooksResponse> response) {
+                Log.d("ExploreDebug", "First query HTTP code: " + response.code());
+
+                boolean genreQueryEmpty = !response.isSuccessful()
+                        || response.body() == null
+                        || response.body().items == null
+                        || response.body().items.isEmpty();
+
+                Log.d("ExploreDebug", "genreQueryEmpty: " + genreQueryEmpty);
+
+                if (genreQueryEmpty) {
+                    Log.d("ExploreDebug", "Falling back to: inauthor:" + author);
+                    api.searchVolumes("inauthor:" + author, BuildConfig.GOOGLE_BOOKS_API_KEY).enqueue(new Callback<GoogleBooksResponse>() {
+                        @Override
+                        public void onResponse(Call<GoogleBooksResponse> call2, Response<GoogleBooksResponse> response2) {
+                            Log.d("ExploreDebug", "Fallback query HTTP code: " + response2.code());
+                            cb.onResponse(call2, response2);
+                        }
+
+                        @Override
+                        public void onFailure(Call<GoogleBooksResponse> call2, Throwable t) {
+                            Log.e("ExploreDebug", "Fallback query failed: " + t.getMessage());
+                            cb.onFailure(call2, t);
+                        }
+                    });
+                } else {
+                    cb.onResponse(call, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GoogleBooksResponse> call, Throwable t) {
+                Log.e("ExploreDebug", "First query failed: " + t.getMessage());
+                cb.onFailure(call, t);
+            }
+        });
+    }
     public void searchBooks(String queryText, Callback<GoogleBooksResponse> cb) {
         api.searchVolumes(queryText, BuildConfig.GOOGLE_BOOKS_API_KEY).enqueue(cb);
     }
@@ -120,4 +160,12 @@ public class BookRepository {
         });
         return liveData;
     }
+    public void updateLogEntry(String bookId, String logId, ReadingLogEntry entry) {
+        booksRef().document(bookId).collection("logs").document(logId).set(entry);
+    }
+
+    public void deleteLogEntry(String bookId, String logId) {
+        booksRef().document(bookId).collection("logs").document(logId).delete();
+    }
+
 }

@@ -14,11 +14,14 @@ import java.util.Locale;
 
 public class LogTimelineAdapter extends RecyclerView.Adapter<LogTimelineAdapter.ViewHolder> {
     private List<ReadingLogEntry> entries;
-
-    public LogTimelineAdapter(List<ReadingLogEntry> entries) {
+    private final OnLogClickListener listener;
+    public LogTimelineAdapter(List<ReadingLogEntry> entries, OnLogClickListener listener) {
         this.entries = entries;
+        this.listener = listener;
     }
-
+    public interface OnLogClickListener {
+        void onLogClick(ReadingLogEntry entry);
+    }
     public void updateEntries(List<ReadingLogEntry> newEntries) {
         this.entries = newEntries;
         notifyDataSetChanged();
@@ -47,6 +50,7 @@ public class LogTimelineAdapter extends RecyclerView.Adapter<LogTimelineAdapter.
         String dateStr = new SimpleDateFormat("MMM d", Locale.getDefault()).format(entry.timestamp);
         holder.meta.setText(entry.emotionName + " · page " + entry.pageAtLog + " · " + dateStr);
         holder.note.setText(entry.noteText);
+        holder.itemView.setOnClickListener(v -> listener.onLogClick(entry));
     }
 
     @Override

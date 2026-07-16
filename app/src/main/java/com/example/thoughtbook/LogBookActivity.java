@@ -22,13 +22,13 @@ public class LogBookActivity extends AppCompatActivity {
     private List<CheckBox> shelfCheckboxes = new ArrayList<>();
     private List<Shelf> loadedShelves = new ArrayList<>();
 
-    private String bookTitle, bookAuthor, coverUrl, googleBooksId;
+    private String bookTitle, bookAuthor, coverUrl, googleBooksId, bookGenre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_book);
-
+        bookGenre = getIntent().getStringExtra("genre");
         String uid = FirebaseAuth.getInstance().getUid();
         repository = new BookRepository(uid);
 
@@ -107,6 +107,7 @@ public class LogBookActivity extends AppCompatActivity {
         book.setShelfIds(selectedShelfIds);
         book.setTotalPages(totalPages);
         book.setCurrentPage(0);
+        book.setGenre(bookGenre);
         book.setCurrentEmotionColorHex(emotionColorHex);
         book.setDateAdded(System.currentTimeMillis());
 

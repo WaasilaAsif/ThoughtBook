@@ -51,4 +51,12 @@ public class ReadingLogEntry {
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
+
+    public String getEmotionName() {
+        return emotionName;
+    }
+
+    public void setEmotionName(String emotionName) {
+        this.emotionName = emotionName;
+    }
 }
