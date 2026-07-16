@@ -14,7 +14,11 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 public class BookCardAdapter extends RecyclerView.Adapter<BookCardAdapter.ViewHolder> {
+    public interface onBookClickListener {
+        void onBookClick(Book book);
+    }
     private List<Book> books;
+    private final onBookClickListener listener;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView coverImage;
@@ -31,8 +35,9 @@ public class BookCardAdapter extends RecyclerView.Adapter<BookCardAdapter.ViewHo
         }
     }
 
-    public BookCardAdapter(List<Book> books) {
+    public BookCardAdapter(List<Book> books, onBookClickListener listener) {
         this.books = books;
+        this.listener = listener;
     }
     public void updateBooks(List<Book> newBooks) {
         this.books = newBooks;
@@ -52,7 +57,7 @@ public class BookCardAdapter extends RecyclerView.Adapter<BookCardAdapter.ViewHo
         Book book = books.get(position);
 
         viewHolder.bookTitle.setText(book.getTitle());
-
+        viewHolder.itemView.setOnClickListener(v-> listener.onBookClick(book));
         if (book.getCoverUrl() != null && !book.getCoverUrl().isEmpty()) {
             viewHolder.coverImage.setVisibility(View.VISIBLE);
             viewHolder.fallbackTitle.setVisibility(View.GONE);

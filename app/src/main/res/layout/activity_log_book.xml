@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+
+        <TextView
+            android:id="@+id/bookTitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingTop="8dp" />
+
+        <TextView
+            android:id="@+id/bookAuthorText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:paddingBottom="16dp" />
+
+        <TextView
+            android:text="Total pages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/totalPagesInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+        <TextView
+            android:text="How does it feel right now?"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp" />
+        <RadioGroup
+            android:id="@+id/emotionGroup"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioButton android:id="@+id/emotionJoyful" android:text="Joyful" android:tag="#FFC857" />
+            <RadioButton android:id="@+id/emotionBittersweet" android:text="Bittersweet" android:tag="#8E7DBE" />
+            <RadioButton android:id="@+id/emotionCozy" android:text="Cozy" android:tag="#C97C5D" />
+            <RadioButton android:id="@+id/emotionThrilling" android:text="Thrilling" android:tag="#D64550" />
+            <RadioButton android:id="@+id/emotionMelancholy" android:text="Melancholy" android:tag="#5C7AFF" />
+            <RadioButton android:id="@+id/emotionHopeful" android:text="Hopeful" android:tag="#6FCF97" />
+        </RadioGroup>
+
+        <TextView
+            android:text="Note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp" />
+        <EditText
+            android:id="@+id/noteInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="What's happening in the story right now?"
+            android:inputType="textMultiLine"
+            android:minLines="3" />
+
+        <TextView
+            android:text="Shelves"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp" />
+        <LinearLayout
+            android:id="@+id/shelfCheckboxContainer"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save log entry"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>

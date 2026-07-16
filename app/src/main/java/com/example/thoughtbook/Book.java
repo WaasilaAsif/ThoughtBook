@@ -148,8 +148,10 @@ public class Book {
         return emotionTags;
     }
 
-    public void setEmotionTags(ArrayList<String> emotionTags) {
+    public void setEmotionTags(List<String> emotionTags) {
         this.emotionTags = emotionTags;
     }
+
+
 }
 

@@ -1,6 +1,8 @@
 package com.example.thoughtbook;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,14 +56,38 @@ public class AddBookFragment extends Fragment {
             if (query.isEmpty()) return;
 
             repository.searchBooks(query, new Callback<GoogleBooksResponse>() {
+//                @Override
+//                public void onResponse(Call<GoogleBooksResponse> call, Response<GoogleBooksResponse> response) {
+//                    if (response.body() != null && response.body().items != null) {
+//                        adapter.updateItems(response.body().items);
+//                    } else {
+//                        Toast.makeText(getContext(), "No results found", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+
                 @Override
                 public void onResponse(Call<GoogleBooksResponse> call, Response<GoogleBooksResponse> response) {
+                    Log.d("SearchDebug", "HTTP code: " + response.code());
+                    Log.d("SearchDebug", "Raw body: " + response.raw().toString());
+
+                    if (!response.isSuccessful()) {
+                        Toast.makeText(getContext(),"Search service unavailable, try again", Toast.LENGTH_SHORT).show();
+                        try {
+                            Log.e("SearchDebug", "Error body: " + response.errorBody().string());
+                        } catch (Exception e) {
+                            Log.e("SearchDebug", "Couldn't read error body");
+                        }
+                    }
+
                     if (response.body() != null && response.body().items != null) {
                         adapter.updateItems(response.body().items);
                     } else {
+                        adapter.updateItems(new ArrayList<>());
                         Toast.makeText(getContext(), "No results found", Toast.LENGTH_SHORT).show();
                     }
                 }
+
+
 
                 @Override
                 public void onFailure(Call<GoogleBooksResponse> call, Throwable t) {
@@ -72,7 +98,13 @@ public class AddBookFragment extends Fragment {
     }
 
     private void openLogScreen(Item item) {
-        // next step: pass this item's data into a LogBookActivity
-        Toast.makeText(getContext(), "Selected: " + item.volumeInfo.title, Toast.LENGTH_SHORT).show();
+        VolumeInfo info = item.volumeInfo;
+        Intent intent = new Intent(getContext(), LogBookActivity.class);
+        intent.putExtra("title", info.title);
+        intent.putExtra("author", info.authors != null && !info.authors.isEmpty()
+                ? String.join(", ", info.authors) : "Unknown author");
+        intent.putExtra("coverUrl", info.imageLinks != null ? info.imageLinks.thumbnail : null);
+        intent.putExtra("googleBooksId", item.id);
+        startActivity(intent);
     }
 }

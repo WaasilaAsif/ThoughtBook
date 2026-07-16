@@ -30,7 +30,6 @@ public class BookRepository {
         return db.collection("users").document(uid).collection("shelves");
     }
 
-    // ---------- Books ----------
     public LiveData<List<Book>> getAllBooks() {
         MutableLiveData<List<Book>> liveData = new MutableLiveData<>();
         booksRef().addSnapshotListener((snapshot, error) -> {
@@ -59,7 +58,6 @@ public class BookRepository {
         booksRef().document(bookId).update("shelfIds", FieldValue.arrayRemove(shelfId));
     }
 
-    // ---------- Reading logs (subcollection) ----------
     public void addLogEntry(String bookId, ReadingLogEntry entry) {
         CollectionReference logsRef = booksRef().document(bookId).collection("logs");
         logsRef.add(entry);
@@ -79,8 +77,6 @@ public class BookRepository {
                 });
         return liveData;
     }
-
-    // ---------- Shelves ----------
     public void createShelf(Shelf shelf) {
         shelvesRef().document(shelf.shelfId).set(shelf);
     }
@@ -93,10 +89,6 @@ public class BookRepository {
         return liveData;
     }
 
-    // ---------- Explore ----------
-
-
-// ...
 
     public void getSimilarBooks(String genre, String author, Callback<GoogleBooksResponse> cb) {
         String query = "subject:" + genre + "+inauthor:" + author;
@@ -106,7 +98,6 @@ public class BookRepository {
     public void searchBooks(String queryText, Callback<GoogleBooksResponse> cb) {
         api.searchVolumes(queryText, BuildConfig.GOOGLE_BOOKS_API_KEY).enqueue(cb);
     }
-    // ---------- Pace estimate ----------
     public double estimateMinutesRemaining(Book book, List<ReadingLogEntry> logs) {
         if (logs == null || logs.size() < 2) {
             double defaultPagesPerMin = 0.6;
@@ -118,5 +109,15 @@ public class BookRepository {
         double pagesPerMin = (last.pageAtLog - prev.pageAtLog) / minutesElapsed;
         if (pagesPerMin <= 0) pagesPerMin = 0.6;
         return (book.getTotalPages() - book.getCurrentPage()) / pagesPerMin;
+    }
+
+    public LiveData<Book> getBook(String bookId) {
+        MutableLiveData<Book> liveData = new MutableLiveData<>();
+        booksRef().document(bookId).addSnapshotListener((snapshot, error) -> {
+            if (snapshot != null && snapshot.exists()) {
+                liveData.setValue(snapshot.toObject(Book.class));
+            }
+        });
+        return liveData;
     }
 }
