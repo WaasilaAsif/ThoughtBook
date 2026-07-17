@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,11 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,21 +26,14 @@ import java.util.List;
 public class BookshelfFragment extends Fragment {
 
     private BookshelfViewModel viewModel;
-    private BookCardAdapter adapter;
     private List<Book> cachedBooks = new ArrayList<>();
     private List<Shelf> cachedShelves = new ArrayList<>();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_bookshelf, container, false);
     }
-//    private void updateLibraryCounts(LinearLayout container, int toRead, int reading, int finished, int abandoned) {
-//        container.removeAllViews();
-//        addCountRow(container, "To Read", toRead, ShelfStatus.TO_READ);
-//        addCountRow(container, "Reading Now", reading, ShelfStatus.READING);
-//        addCountRow(container, "Finished", finished, ShelfStatus.FINISHED);
-//        addCountRow(container, "Abandoned", abandoned, ShelfStatus.ABANDONED);
-//    }
 
     private void rebuildLibrarySection(LinearLayout container) {
         container.removeAllViews();
@@ -108,54 +101,12 @@ public class BookshelfFragment extends Fragment {
         return row;
     }
 
-    private void addCountRow(LinearLayout container, String label, int count, ShelfStatus status) {
-        LinearLayout row = new LinearLayout(getContext());
-        row.setOrientation(LinearLayout.HORIZONTAL);
-        row.setPadding(0, 12, 0, 12);
-        row.setClickable(true);
-        row.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), LibraryFilterActivity.class);
-            intent.putExtra("status", status.name());
-            startActivity(intent);
-        });
-
-        TextView labelView = new TextView(getContext());
-        labelView.setText(label);
-        labelView.setTextColor(getResources().getColor(R.color.ink_primary));
-        labelView.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-
-        TextView countView = new TextView(getContext());
-        countView.setText(String.valueOf(count));
-        countView.setTextColor(getResources().getColor(R.color.ink_secondary));
-
-        row.addView(labelView);
-        row.addView(countView);
-        container.addView(row);
-    }
-
-//    private void addCountRow(LinearLayout container, String label, int count) {
-//        LinearLayout row = new LinearLayout(getContext());
-//        row.setOrientation(LinearLayout.HORIZONTAL);
-//        row.setPadding(0, 12, 0, 12);
-//
-//        TextView labelView = new TextView(getContext());
-//        labelView.setText(label);
-//        labelView.setTextColor(getResources().getColor(R.color.ink_primary));
-//        labelView.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-//
-//        TextView countView = new TextView(getContext());
-//        countView.setText(String.valueOf(count));
-//        countView.setTextColor(getResources().getColor(R.color.ink_secondary));
-//
-//        row.addView(labelView);
-//        row.addView(countView);
-//        container.addView(row);
-//    }
     private void openDetail(Book book) {
         Intent intent = new Intent(getContext(), BookDetailActivity.class);
         intent.putExtra("bookId", book.getBookId());
         startActivity(intent);
     }
+
     private void showCreateShelfDialog() {
         EditText input = new EditText(getContext());
         input.setHint("Shelf name");
@@ -175,10 +126,10 @@ public class BookshelfFragment extends Fragment {
                     shelf.setDateCreated(System.currentTimeMillis());
                     shelf.setSortOrder(0);
 
-                    String uid = FirebaseAuth.getInstance().getUid();
-                    new BookRepository(uid).createShelf(shelf);
-
-                    Toast.makeText(getContext(), "Shelf created!", Toast.LENGTH_SHORT).show();
+                    AuthManager.whenUidReady(uid -> {
+                        new BookRepository(uid).createShelf(shelf);
+                        Toast.makeText(getContext(), "Shelf created!", Toast.LENGTH_SHORT).show();
+                    });
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
@@ -187,39 +138,33 @@ public class BookshelfFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         view.findViewById(R.id.addShelfButton).setOnClickListener(v -> showCreateShelfDialog());
+
         viewModel = new ViewModelProvider(this).get(BookshelfViewModel.class);
+
         view.findViewById(R.id.viewAllButton).setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), LibraryFilterActivity.class);
             intent.putExtra("title", "All Books");
             startActivity(intent);
         });
+
         RecyclerView readingNowList = view.findViewById(R.id.readingNowList);
         readingNowList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        BookCardAdapter readingNowAdapter = new BookCardAdapter(new ArrayList<>(), book -> openDetail(book), R.layout.item_book_card);
+        BookCardAdapter readingNowAdapter = new BookCardAdapter(new ArrayList<>(), this::openDetail, R.layout.item_book_card);
         readingNowList.setAdapter(readingNowAdapter);
-//
-//        LinearLayout libraryCountsContainer = view.findViewById(R.id.libraryCountsContainer);
-//
-//        viewModel.getBooks().observe(getViewLifecycleOwner(), books -> {
-//            List<Book> readingNow = new ArrayList<>();
-//            int toRead = 0, reading = 0, finished = 0, abandoned = 0;
-//
-//            for (Book b : books) {
-//                if (b.getStatus() == ShelfStatus.READING) { readingNow.add(b); reading++; }
-//                else if (b.getStatus() == ShelfStatus.TO_READ) toRead++;
-//                else if (b.getStatus() == ShelfStatus.FINISHED) finished++;
-//                else if (b.getStatus() == ShelfStatus.ABANDONED) abandoned++;
-//            }
-//
-//            readingNowAdapter.updateBooks(readingNow);
-//            updateLibraryCounts(libraryCountsContainer, toRead, reading, finished, abandoned);
-//        });
 
         LinearLayout libraryCountsContainer = view.findViewById(R.id.libraryCountsContainer);
+        View emptyState = view.findViewById(R.id.emptyStateView);
 
         viewModel.getBooks().observe(getViewLifecycleOwner(), books -> {
             cachedBooks = books;
+
+            if (books == null || books.isEmpty()) {
+                emptyState.setVisibility(View.VISIBLE);
+            } else {
+                emptyState.setVisibility(View.GONE);
+            }
 
             List<Book> readingNow = new ArrayList<>();
             for (Book b : books) {
@@ -230,11 +175,22 @@ public class BookshelfFragment extends Fragment {
             rebuildLibrarySection(libraryCountsContainer);
         });
 
-        String uid = FirebaseAuth.getInstance().getUid();
-        new BookRepository(uid).getShelves().observe(getViewLifecycleOwner(), shelves -> {
-            cachedShelves = shelves;
-            rebuildLibrarySection(libraryCountsContainer);
+        AuthManager.whenUidReady(uid -> {
+            new BookRepository(uid).getShelves().observe(getViewLifecycleOwner(), shelves -> {
+                cachedShelves = shelves;
+                rebuildLibrarySection(libraryCountsContainer);
+            });
         });
 
+        ImageButton themeToggle = view.findViewById(R.id.themeToggle);
+        themeToggle.setOnClickListener(v -> {
+            ThemeManager.toggleDarkMode(getContext());
+            requireActivity().recreate();
+        });
+
+        emptyState.setOnClickListener(v -> {
+            BottomNavigationView bottomNav = requireActivity().findViewById(R.id.bottom_nav);
+            bottomNav.setSelectedItemId(R.id.addBookFragment); // verify this matches your real nav_graph.xml id
+        });
     }
 }

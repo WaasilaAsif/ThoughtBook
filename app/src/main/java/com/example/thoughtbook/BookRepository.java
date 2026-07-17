@@ -138,8 +138,37 @@ public class BookRepository {
     public void updateRating(String bookId, int rating) {
         booksRef().document(bookId).update("personalRating", (float) rating);
     }
+//    public void searchBooks(String queryText, Callback<GoogleBooksResponse> cb) {
+//        api.searchVolumes(queryText, BuildConfig.GOOGLE_BOOKS_API_KEY).enqueue(cb);
+//    }
+
     public void searchBooks(String queryText, Callback<GoogleBooksResponse> cb) {
-        api.searchVolumes(queryText, BuildConfig.GOOGLE_BOOKS_API_KEY).enqueue(cb);
+        searchBooksWithRetry(queryText, cb, 2); // up to 2 silent retries before giving up
+    }
+
+    private void searchBooksWithRetry(String query, Callback<GoogleBooksResponse> cb, int retriesLeft) {
+        api.searchVolumes(query, BuildConfig.GOOGLE_BOOKS_API_KEY).enqueue(new Callback<GoogleBooksResponse>() {
+            @Override
+            public void onResponse(Call<GoogleBooksResponse> call, Response<GoogleBooksResponse> response) {
+                boolean serverError = !response.isSuccessful() && response.code() >= 500;
+                if (serverError && retriesLeft > 0) {
+                    new android.os.Handler().postDelayed(
+                            () -> searchBooksWithRetry(query, cb, retriesLeft - 1), 800);
+                } else {
+                    cb.onResponse(call, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GoogleBooksResponse> call, Throwable t) {
+                if (retriesLeft > 0) {
+                    new android.os.Handler().postDelayed(
+                            () -> searchBooksWithRetry(query, cb, retriesLeft - 1), 800);
+                } else {
+                    cb.onFailure(call, t);
+                }
+            }
+        });
     }
     public double estimateMinutesRemaining(Book book, List<ReadingLogEntry> logs) {
         if (logs == null || logs.size() < 2) {

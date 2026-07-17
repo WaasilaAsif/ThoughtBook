@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +63,36 @@ public class ExploreFragment extends Fragment {
         ExploreResultAdapter adapter = new ExploreResultAdapter(new ArrayList<>(), new ExploreResultAdapter.OnResultActionListener() {
             @Override
             public void onCardClick(Item item) {
+                VolumeInfo info = item.volumeInfo;
+
+                LinearLayout dialogLayout = new LinearLayout(getContext());
+                dialogLayout.setOrientation(LinearLayout.VERTICAL);
+                dialogLayout.setPadding(48, 24, 48, 0);
+
+                TextView authorText = new TextView(getContext());
+                authorText.setText(info.authors != null && !info.authors.isEmpty()
+                        ? String.join(", ", info.authors) : "Unknown author");
+                authorText.setTextColor(getResources().getColor(R.color.ink_secondary));
+
+                TextView descText = new TextView(getContext());
+                descText.setText(info.description != null ? info.description : "No description available.");
+                descText.setPadding(0, 24, 0, 0);
+                descText.setTextColor(getResources().getColor(R.color.ink_primary));
+
+                dialogLayout.addView(authorText);
+                dialogLayout.addView(descText);
+                ScrollView scrollWrapper = new ScrollView(getContext());
+                scrollWrapper.addView(dialogLayout);
+
+                new androidx.appcompat.app.AlertDialog.Builder(getContext())
+                        .setTitle(info.title)
+                        .setView(scrollWrapper)
+                        .setPositiveButton("Log it", (dialog, which) -> openLogScreen(item))
+                        .setNegativeButton("Cancel", null)
+                        .show();
+            }
+
+            private void openLogScreen(Item item) {
                 VolumeInfo info = item.volumeInfo;
                 Intent intent = new Intent(getContext(), LogBookActivity.class);
                 intent.putExtra("title", info.title);
@@ -123,6 +155,8 @@ public class ExploreFragment extends Fragment {
             Callback<GoogleBooksResponse> exploreCallback = new Callback<GoogleBooksResponse>() {
                 @Override
                 public void onResponse(Call<GoogleBooksResponse> call, Response<GoogleBooksResponse> response) {
+                    if (!isAdded()) return; // fragment is gone, don't touch UI
+
                     if (!response.isSuccessful()) {
                         Toast.makeText(getContext(), "Recommendations unavailable, try again", Toast.LENGTH_SHORT).show();
                         return;
@@ -136,6 +170,7 @@ public class ExploreFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<GoogleBooksResponse> call, Throwable t) {
+                    if (!isAdded()) return;
                     Toast.makeText(getContext(), "Check your internet connection", Toast.LENGTH_SHORT).show();
                 }
             };

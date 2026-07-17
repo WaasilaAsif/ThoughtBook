@@ -12,6 +12,27 @@ public class AuthManager {
     public interface AuthCallback {
         void onResult(String uid);
     }
+    public interface UidReadyCallback {
+        void onReady(String uid);
+    }
+
+    public static void whenUidReady(UidReadyCallback callback) {
+        String uid = FirebaseAuth.getInstance().getUid();
+        if (uid != null) {
+            callback.onReady(uid);
+        } else {
+            FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    String freshUid = firebaseAuth.getUid();
+                    if (freshUid != null) {
+                        firebaseAuth.removeAuthStateListener(this);
+                        callback.onReady(freshUid);
+                    }
+                }
+            });
+        }
+    }
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
 
     public void ensureSignedIn(AuthCallback callback)

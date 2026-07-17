@@ -1,5 +1,9 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 <ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/canvas">
@@ -25,19 +29,26 @@
                 android:textStyle="bold"
                 android:textColor="@color/accent" />
 
-            <Button
-                android:id="@+id/themeToggle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="" />
-
-            <Button
+            <ImageButton
                 android:id="@+id/addShelfButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:layout_toStartOf="@id/themeToggle"
-                android:text="+ Shelf" />
+                android:layout_marginEnd="10dp"
+                android:src="@android:drawable/ic_input_add"
+                android:background="@drawable/pill_bg"
+                android:padding="10dp"
+                android:contentDescription="Add shelf" />
+
+            <ImageButton
+                android:id="@+id/themeToggle"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/light"
+                android:background="@drawable/pill_bg"
+                android:padding="10dp"
+                android:contentDescription="Toggle theme" />
 
         </RelativeLayout>
 
@@ -65,12 +76,6 @@
             android:paddingBottom="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:id="@+id/libraryCountsContainer"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/viewAllButton"
             android:text="View All"
@@ -78,5 +83,48 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <LinearLayout
+            android:id="@+id/libraryCountsContainer"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 </ScrollView>
+
+
+        <LinearLayout
+            android:id="@+id/emptyStateView"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="@color/canvas"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="200dp"
+                android:layout_height="280dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/rounded_card_bg_solid"
+                android:backgroundTint="#334A3FE0">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@android:drawable/ic_input_add"
+                    app:tint="@color/accent" />
+
+                <TextView
+                    android:text="Add book"
+                    android:textColor="@color/accent"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginTop="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </FrameLayout>

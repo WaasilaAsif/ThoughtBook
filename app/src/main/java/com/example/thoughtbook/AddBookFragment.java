@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,7 +30,33 @@ public class AddBookFragment extends Fragment {
 
     private BookRepository repository;
     private SearchResultAdapter adapter;
+    private void loadDefaultSuggestions() {
+        repository.getAllBooks().observe(getViewLifecycleOwner(), books -> {
+            if (books == null || books.isEmpty()) return;
+            Book mostRecent = books.get(0);
+            for (Book b : books) {
+                if (b.getDateAdded() > mostRecent.getDateAdded()) mostRecent = b;
+            }
+            if (mostRecent.getAuthors() == null || mostRecent.getAuthors().isEmpty()) return;
 
+            String author = mostRecent.getAuthors().get(0);
+            String genre = mostRecent.getGenre();
+
+            Callback<GoogleBooksResponse> cb = new Callback<GoogleBooksResponse>() {
+                @Override
+                public void onResponse(Call<GoogleBooksResponse> call, Response<GoogleBooksResponse> response) {
+                    if (response.isSuccessful() && response.body() != null && response.body().items != null) {
+                        adapter.updateItems(response.body().items);
+                    }
+                }
+                @Override
+                public void onFailure(Call<GoogleBooksResponse> call, Throwable t) { }
+            };
+
+            if (genre != null) repository.getSimilarBooks(genre, author, cb);
+            else repository.searchBooks("inauthor:" + author, cb);
+        });
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,13 +71,13 @@ public class AddBookFragment extends Fragment {
         repository = new BookRepository(uid);
 
         EditText searchInput = view.findViewById(R.id.searchInput);
-        Button searchButton = view.findViewById(R.id.searchButton);
+        ImageButton searchButton = view.findViewById(R.id.searchButton);
         RecyclerView resultsView = view.findViewById(R.id.searchResults);
 
         resultsView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new SearchResultAdapter(new ArrayList<>(), item -> openLogScreen(item));
         resultsView.setAdapter(adapter);
-
+        loadDefaultSuggestions();
         searchButton.setOnClickListener(v -> {
             String query = searchInput.getText().toString().trim();
             if (query.isEmpty()) return;
