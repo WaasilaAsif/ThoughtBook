@@ -1,0 +1,89 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_card_bg_solid"
+    android:backgroundTint="@color/canvas_card"
+    android:padding="14dp"
+    android:layout_marginBottom="12dp">
+
+    <ImageView
+        android:id="@+id/exploreCover"
+        android:layout_width="70dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/rounded_card_bg" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/exploreTitle"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/ink_primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/exploreAuthor"
+                    android:textSize="13sp"
+                    android:textColor="@color/ink_secondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/addTbrButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ TBR"
+                android:textSize="12sp"
+                android:background="@drawable/pill_outline_bg"
+                android:textColor="@color/accent"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="6dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/exploreCategory"
+            android:textSize="11sp"
+            android:textColor="@color/ink_secondary"
+            android:background="@drawable/pill_bg"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="3dp"
+            android:layout_marginTop="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/exploreDescription"
+            android:textSize="13sp"
+            android:textColor="@color/ink_secondary"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginTop="6dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</LinearLayout>

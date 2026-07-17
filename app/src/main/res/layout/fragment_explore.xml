@@ -1,20 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/canvas">
+
+    <TextView
+        android:text="Explore"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/accent"
+        android:padding="20dp"
+        android:paddingBottom="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/exploreHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textSize="16sp" />
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="16dp"
+        android:textSize="15sp"
+        android:textColor="@color/ink_secondary" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/exploreResults"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:paddingHorizontal="12dp" />
 
 </LinearLayout>

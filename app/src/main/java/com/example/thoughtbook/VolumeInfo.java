@@ -8,4 +8,5 @@ public class VolumeInfo {
     List<String> categories;
     ImageLinks imageLinks;
     int pageCount;
+    String description;
 }

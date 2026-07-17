@@ -1,5 +1,6 @@
 package com.example.thoughtbook;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,19 +44,56 @@ public class ExploreFragment extends Fragment {
         TextView header = view.findViewById(R.id.exploreHeader);
         RecyclerView resultsView = view.findViewById(R.id.exploreResults);
         resultsView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new SearchResultAdapter(new ArrayList<>(), item -> {
-            // tapping an Explore result opens the same log flow as a normal search result
-            VolumeInfo info = item.volumeInfo;
-            android.content.Intent intent = new android.content.Intent(getContext(), LogBookActivity.class);
-            intent.putExtra("title", info.title);
-            intent.putExtra("author", info.authors != null && !info.authors.isEmpty()
-                    ? String.join(", ", info.authors) : "Unknown author");
-            intent.putExtra("coverUrl", info.imageLinks != null ? info.imageLinks.thumbnail : null);
-            intent.putExtra("googleBooksId", item.id);
-            //intent.putExtra("googleBooksId", item.id);
-            intent.putExtra("genre", info.categories != null && !info.categories.isEmpty()
-                    ? info.categories.get(0) : null);
-            startActivity(intent);
+//        adapter = new SearchResultAdapter(new ArrayList<>(), item -> {
+//            // tapping an Explore result opens the same log flow as a normal search result
+//            VolumeInfo info = item.volumeInfo;
+//            android.content.Intent intent = new android.content.Intent(getContext(), LogBookActivity.class);
+//            intent.putExtra("title", info.title);
+//            intent.putExtra("author", info.authors != null && !info.authors.isEmpty()
+//                    ? String.join(", ", info.authors) : "Unknown author");
+//            intent.putExtra("coverUrl", info.imageLinks != null ? info.imageLinks.thumbnail : null);
+//            intent.putExtra("googleBooksId", item.id);
+//            //intent.putExtra("googleBooksId", item.id);
+//            intent.putExtra("genre", info.categories != null && !info.categories.isEmpty()
+//                    ? info.categories.get(0) : null);
+//            startActivity(intent);
+//        });
+        ExploreResultAdapter adapter = new ExploreResultAdapter(new ArrayList<>(), new ExploreResultAdapter.OnResultActionListener() {
+            @Override
+            public void onCardClick(Item item) {
+                VolumeInfo info = item.volumeInfo;
+                Intent intent = new Intent(getContext(), LogBookActivity.class);
+                intent.putExtra("title", info.title);
+                intent.putExtra("author", info.authors != null && !info.authors.isEmpty()
+                        ? String.join(", ", info.authors) : "Unknown author");
+                intent.putExtra("coverUrl", info.imageLinks != null ? info.imageLinks.thumbnail : null);
+                intent.putExtra("googleBooksId", item.id);
+                intent.putExtra("genre", info.categories != null && !info.categories.isEmpty()
+                        ? info.categories.get(0) : null);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onQuickAddClick(Item item) {
+                VolumeInfo info = item.volumeInfo;
+                Book book = new Book();
+                book.setBookId(java.util.UUID.randomUUID().toString());
+                book.setGoogleBooksId(item.id);
+                book.setTitle(info.title);
+                book.setAuthors(info.authors);
+                book.setCoverUrl(info.imageLinks != null
+                        ? info.imageLinks.thumbnail.replace("http://", "https://") : null);
+                book.setGenre(info.categories != null && !info.categories.isEmpty()
+                        ? info.categories.get(0) : null);
+                book.setStatus(ShelfStatus.TO_READ);
+                book.setShelfIds(new ArrayList<>());
+                book.setTotalPages(info.pageCount);
+                book.setCurrentPage(0);
+                book.setDateAdded(System.currentTimeMillis());
+
+                repository.logBook(book);
+                Toast.makeText(getContext(), "Added to To Read", Toast.LENGTH_SHORT).show();
+            }
         });
         resultsView.setAdapter(adapter);
 
