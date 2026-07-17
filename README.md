@@ -167,13 +167,13 @@ Every user is scoped under their own anonymous `uid` — no separate identity sy
 ---
 
 ## Roadmap
-
+<div align="left">
 - [ ] Favorites / "Starred" books
 - [ ] Persisted custom emotion tags
 - [ ] Full-library search & sort controls
 - [ ] Additional cozy/analog visual theme
 - [ ] Production-hardened Firestore security rules
-
+</div>
 ---
 
 
