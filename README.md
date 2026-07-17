@@ -12,6 +12,8 @@
 ![Language](https://img.shields.io/badge/Language-Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Backend-Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
 ![Min SDK](https://img.shields.io/badge/Min%20SDK-24-informational?style=for-the-badge)
+![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
+![Claude](https://img.shields.io/badge/Claude-D97757?style=for-the-badge&logo=claude&logoColor=white)
 ![License](https://img.shields.io/badge/License-Unlicensed-lightgrey?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-In%20Development-blueviolet?style=for-the-badge)
 
