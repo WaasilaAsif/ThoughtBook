@@ -1,7 +1,8 @@
 <div align="center">
 
-# ThoughtBook
+<img src="screenshots/Icon.png" width="80" alt="ThoughtBook Icon" />
 
+# ThoughtBook
 ### An emotion based reading tracker for Android
 
 *Log what you read. Remember how it made you feel.*
